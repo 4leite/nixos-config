@@ -12,6 +12,7 @@
     userEmail = "4leite@gmail.com";
     extraConfig = {
       init.defaultBranch = "main";
+      push.autoSetupRemote = true;
     };
   };
 
