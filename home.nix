@@ -82,6 +82,12 @@
     # EDITOR = "emacs";
   };
 
+  dconf = {
+    enable = true;
+    settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+    settings."org/gnome/mutter".check-alive-timeout = 0;
+  };
+  
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }
