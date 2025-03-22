@@ -134,6 +134,22 @@
 
   nixpkgs.config.allowUnfree = true;
 
+    # Enable auto-upgrades.
+  system.autoUpgrade = {
+    enable = true;
+    # Run daily
+    dates = "daily";
+    # Build the new config and make it the default, but don't switch yet.  This will be picked up on reboot.  This helps
+    # prevent issues with OpenSnitch configs not well matching the state of the system.
+    operation = "boot";
+  };
+
+  # Limit nix rebuilds priority.  When left on the default is uses all available reouses which can make the system unusable
+  nix = {
+    daemonCPUSchedPolicy = "idle";
+    daemonIOSchedClass = "idle";
+  };
+
   # Install firefox.
   programs.firefox.enable = true;
 
@@ -148,12 +164,19 @@
     gparted
     lutris
     pciutils
+    vscode.fhs
+    nodejs
+    nodePackages.pnpm
+    discord
+    google-chrome
+    mono
+    wine
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
   ];  
 
   environment.shellAliases = {
-    nxs = "sudo nixos-rebuild switch --flake ~/.nixos";
+    nxs = "sudo nixos-rebuild switch --flake ~/.dotnixos";
   };
 
   programs.neovim = {
@@ -164,7 +187,11 @@
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  };
+
+  environment.shellAliases = {
+    p = "pnpm";
   };
 
   # Some programs need SUID wrappers, can be configured further or are
