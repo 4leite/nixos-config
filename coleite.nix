@@ -3,18 +3,9 @@
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "jon";
-  home.homeDirectory = "/home/jon";
+  home.username = "coleite";
+  home.homeDirectory = "/home/coleite";
 
-  programs.git = {
-    enable = true;
-    userName = "4leite";
-    userEmail = "4leite@gmail.com";
-    extraConfig = {
-      init.defaultBranch = "main";
-      push.autoSetupRemote = true;
-    };
-  };
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -86,6 +77,7 @@
     enable = true;
     settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
     settings."org/gnome/mutter".check-alive-timeout = lib.hm.gvariant.mkUint32 0;
+    settings."org/gnome/desktop/interface".scaling-factor = 1.5;
   };
   
   # Let Home Manager install and manage itself.
