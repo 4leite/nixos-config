@@ -16,7 +16,7 @@
     nixosConfigurations.chewbacca = nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs;};
       modules = [
-        ./configuration.nix
+        ./chewbacca.nix
 	inputs.chuwi-minibook-x.nixosModules.default
         inputs.home-manager.nixosModules.default
       ];

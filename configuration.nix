@@ -7,15 +7,9 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
       inputs.home-manager.nixosModules.default
     ];
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  networking.hostName = "chewbacca"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -57,7 +51,6 @@
     [org.gnome.mutter]
     experimental-features=['scale-monitor-framebuffer', 'xwayland-native-scaling']
   '';
-
 
 # Configure keymap in X11
   services.xserver.xkb = {
