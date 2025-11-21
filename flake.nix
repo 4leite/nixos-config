@@ -8,18 +8,32 @@
 
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs: {
-    nixosConfigurations.chewbacca = nixpkgs.lib.nixosSystem {
-      specialArgs = {inherit inputs;};
-      modules = [
-        ./chewbacca.nix
-	inputs.chuwi-minibook-x.nixosModules.default
-        inputs.home-manager.nixosModules.default
-      ];
+  outputs = { self, home-manager, nixpkgs, ... }@inputs: 
+  let
+    system = "x86_64-linux";
+    specialArgs = inputs // { inherit system; };
+    shared-modules = [
+      home-manager.nixosModules.home-manager
+      {
+        home-manager = {
+	  useUserPackages = true;
+	  extraSpecialArgs = specialArgs;
+	};
+      }
+    ];
+  in {
+    nixosConfigurations = {
+      chewbacca = nixpkgs.lib.nixosSystem {
+        specialArgs = specialArgs;
+	system = system;
+        modules = shared-modules ++ [
+          ./chewbacca.nix
+	  inputs.chuwi-minibook-x.nixosModules.default
+        ];
+      };
     };
   };
 }
