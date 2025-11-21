@@ -31,6 +31,7 @@
 	system = system;
         modules = shared-modules ++ [
           ./hosts/chewbacca/configuration.nix
+	  ./users/jon.nix
 	  inputs.chuwi-minibook-x.nixosModules.default
         ];
       };

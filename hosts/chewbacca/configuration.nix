@@ -95,16 +95,7 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users = {
-   jon = {
-    isNormalUser = true;
-    description = "Jon";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-    #  thunderbird
-    ];
-  };
-coleite = {
+  users.users.coleite = {
     isNormalUser = true;
     description = "Coleite";
     extraGroups = [ "networkmanager" "wheel" ];
@@ -112,15 +103,8 @@ coleite = {
     #  thunderbird
     ];
   };
-};
 
-  home-manager = {
-    extraSpecialArgs = { inherit inputs; };
-    users = {
-      "jon" = import ../../users/jon.nix;
-      "coleite" = import ../../users/coleite.nix;
-    };
-  };
+  home-manager.users."coleite" = import ../../users/coleite.nix;
 
   nixpkgs.config.allowUnfree = true;
 
