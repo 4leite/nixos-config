@@ -30,7 +30,7 @@
         specialArgs = specialArgs;
 	system = system;
         modules = shared-modules ++ [
-          ./chewbacca.nix
+          ./hosts/chewbacca/configuration.nix
 	  inputs.chuwi-minibook-x.nixosModules.default
         ];
       };

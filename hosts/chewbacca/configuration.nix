@@ -5,6 +5,16 @@
 { config, pkgs, inputs, ... }:
 
 {
+  imports = [
+    ./hardware-configuration.nix
+  ];
+
+  # Bootloader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  networking.hostName = "chewbacca"; # Define your hostname.
+ 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -107,8 +117,8 @@ coleite = {
   home-manager = {
     extraSpecialArgs = { inherit inputs; };
     users = {
-      "jon" = import ./jon.nix;
-      "coleite" = import ./coleite.nix;
+      "jon" = import ../../users/jon.nix;
+      "coleite" = import ../../users/coleite.nix;
     };
   };
 

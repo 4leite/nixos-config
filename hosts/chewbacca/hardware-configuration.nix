@@ -8,12 +8,6 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  networking.hostName = "chewbacca"; # Define your hostname.
- 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "uas" "sd_mod" "sdhci_pci" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
