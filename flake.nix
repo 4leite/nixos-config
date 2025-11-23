@@ -11,30 +11,41 @@
     };
   };
 
-  outputs = { self, home-manager, nixpkgs, ... }@inputs: 
-  let
-    system = "x86_64-linux";
-    specialArgs = inputs // { inherit system; };
-    shared-modules = [
-      home-manager.nixosModules.home-manager
-      {
-        home-manager = {
-	  useUserPackages = true;
-	  extraSpecialArgs = specialArgs;
-	};
-      }
-    ];
-  in {
-    nixosConfigurations = {
-      chewbacca = nixpkgs.lib.nixosSystem {
-        specialArgs = specialArgs;
-	system = system;
-        modules = shared-modules ++ [
-          ./hosts/chewbacca/configuration.nix
-	  ./users/jon.nix
-	  inputs.chuwi-minibook-x.nixosModules.default
-        ];
+  outputs =
+    {
+      self,
+      home-manager,
+      nixpkgs,
+      ...
+    }@inputs:
+    let
+      system = "x86_64-linux";
+      specialArgs = inputs // {
+        inherit system;
+      };
+      shared-modules = [
+        home-manager.nixosModules.home-manager
+        {
+          home-manager = {
+            useUserPackages = true;
+            extraSpecialArgs = specialArgs;
+          };
+        }
+      ];
+    in
+    {
+      nixosConfigurations = {
+        chewbacca = nixpkgs.lib.nixosSystem {
+          specialArgs = specialArgs;
+          system = system;
+          modules = shared-modules ++ [
+            ./shared/configuration.nix
+            ./hosts/chewbacca/configuration.nix
+            ./users/jon.nix
+            ./users/coleite.nix
+            inputs.chuwi-minibook-x.nixosModules.default
+          ];
+        };
       };
     };
-  };
 }
