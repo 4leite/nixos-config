@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, lib, ... }:
 
 {
   imports =
@@ -119,7 +119,7 @@
   users.users.jon = {
     isNormalUser = true;
     description = "Jon";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "uinput" ];
     packages = with pkgs; [
     #  thunderbird
     ];
@@ -223,6 +223,10 @@
   
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  # manage disk space
+  nix.settings.auto-optimise-store = true;
+  nix.gc = { automatic = true; persistent = true; dates = "05:00:00"; options = "--delete-older-than 7d"; };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
@@ -231,4 +235,61 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
    system.stateVersion = "24.11"; # Did you read the comment?
 
+  # Kanata
+
+  # Enable the uinput module
+  boot.kernelModules = [ "uinput" ];
+
+  # Enable uinput
+  hardware.uinput.enable = true;
+
+  # Set up udev rules for uinput
+  services.udev.extraRules = ''
+    KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
+  '';
+
+  # Ensure the uinput group exists
+  users.groups.uinput = { };
+
+
+  # Add the Kanata service user to necessary groups
+  systemd.services.kanata-internalKeyboard.serviceConfig = {
+    SupplementaryGroups = [
+      "input"
+      "uinput"
+    ];
+  };
+
+  services.kanata = {
+    enable = true;
+    keyboards = {
+      internalKeyboard = {
+        devices = [
+          # Replace the paths below with the appropriate device paths for your setup.
+          # Use `ls /dev/input/by-path/` to find your keyboard devices.
+	  "/dev/input/by-path/pci-0000:00:14.0-usb-0:4:1.1-event-kbd"
+	  "/dev/input/by-path/pci-0000:00:14.0-usb-0:5:1.0-event-kbd"
+	  "/dev/input/by-path/pci-0000:00:14.0-usb-0:5:1.1-event-kbd"
+	  "/dev/input/by-path/pci-0000:00:14.0-usbv2-0:4:1.1-event-kbd"
+	  "/dev/input/by-path/pci-0000:00:14.0-usbv2-0:5:1.0-event-kbd"
+	  "/dev/input/by-path/pci-0000:00:14.0-usbv2-0:5:1.1-event-kbd"
+        ];
+        extraDefCfg = "process-unmapped-keys yes";
+        config = ''
+          (defsrc
+           Numpad0 Numpad7
+          )
+          (defalias
+           hideout (macro Enter Slash KeyH KeyI KeyD KeyE KeyO KeyU KeyT Enter)
+	   logout (macro Enter Slash KeyE KeyX KeyI KeyT Enter)
+          )
+	  (deflayer poe
+	   @hideout @logout
+	  )
+        '';
+      };
+    };
+  };
+
 }
+
