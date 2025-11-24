@@ -2,7 +2,12 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
   imports = [
@@ -14,7 +19,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "chewbacca"; # Define your hostname.
- 
+
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -34,9 +39,13 @@
   # fix touchpad jitter
   services.udev.extraHwdb = ''
     evdev:name:XXXX0000:05 0911:5288 Touchpad:dmi:*:pnMiniBookX:*
-      EVDEV_ABS_00=:::8
-      EVDEV_ABS_01=:::8
+      EVDEV_ABS_00=:::12:8
+      EVDEV_ABS_01=:::12:8
+      EVDEV_ABS_35=:::12:8
+      EVDEV_ABS_36=:::12:8
   '';
+  #    EVDEV_ABS_00=:::8
+  #   EVDEV_ABS_01=:::8
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
