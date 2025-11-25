@@ -8,7 +8,6 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      inputs.home-manager.nixosModules.default
     ];
 
   # Bootloader.
@@ -17,6 +16,8 @@
 
   networking.hostName = "hotpie"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+
+  users.users.jon.extraGroups = [ "uinput" ];
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -114,23 +115,6 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.jon = {
-    isNormalUser = true;
-    description = "Jon";
-    extraGroups = [ "networkmanager" "wheel" "uinput" ];
-    packages = with pkgs; [
-    #  thunderbird
-    ];
-  };
-
-  home-manager = {
-    extraSpecialArgs = { inherit inputs; };
-    users = {
-      "jon" = import ./home.nix;
-    };
-  };
 
   nixpkgs.config.allowUnfree = true;
 
