@@ -2,13 +2,19 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, lib, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  lib,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -64,7 +70,7 @@
 
     # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
     # Enable this if you have graphical corruption issues or application crashes after waking
-    # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead 
+    # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead
     # of just the bare essentials.
     powerManagement.enable = false;
 
@@ -74,14 +80,14 @@
 
     # Use the NVidia open source kernel module (not to be confused with the
     # independent third-party "nouveau" open source driver).
-    # Support is limited to the Turing and later architectures. Full list of 
-    # supported GPUs is at: 
-    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
+    # Support is limited to the Turing and later architectures. Full list of
+    # supported GPUs is at:
+    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
     # Only available from driver 515.43.04+
     open = true;
 
     # Enable the Nvidia settings menu,
-	# accessible via `nvidia-settings`.
+    # accessible via `nvidia-settings`.
     nvidiaSettings = true;
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
@@ -118,7 +124,7 @@
 
   nixpkgs.config.allowUnfree = true;
 
-    # Enable auto-upgrades.
+  # Enable auto-upgrades.
   system.autoUpgrade = {
     enable = true;
     # Run daily
@@ -163,9 +169,10 @@
     tor
     tor-browser
     android-tools
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
-  ];  
+    nixfmt
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  wget
+  ];
 
   environment.shellAliases = {
     nxs = "sudo nixos-rebuild switch --flake ~/.dotnixos";
@@ -204,12 +211,20 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
-  
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # manage disk space
   nix.settings.auto-optimise-store = true;
-  nix.gc = { automatic = true; persistent = true; dates = "05:00:00"; options = "--delete-older-than 7d"; };
+  nix.gc = {
+    automatic = true;
+    persistent = true;
+    dates = "05:00:00";
+    options = "--delete-older-than 7d";
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -217,7 +232,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-   system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "24.11"; # Did you read the comment?
 
   # Kanata
 
@@ -235,7 +250,6 @@
   # Ensure the uinput group exists
   users.groups.uinput = { };
 
-
   # Add the Kanata service user to necessary groups
   systemd.services.kanata-internalKeyboard.serviceConfig = {
     SupplementaryGroups = [
@@ -251,29 +265,28 @@
         devices = [
           # Replace the paths below with the appropriate device paths for your setup.
           # Use `ls /dev/input/by-path/` to find your keyboard devices.
-	  "/dev/input/by-path/pci-0000:00:14.0-usb-0:4:1.1-event-kbd"
-	  "/dev/input/by-path/pci-0000:00:14.0-usb-0:5:1.0-event-kbd"
-	  "/dev/input/by-path/pci-0000:00:14.0-usb-0:5:1.1-event-kbd"
-	  "/dev/input/by-path/pci-0000:00:14.0-usbv2-0:4:1.1-event-kbd"
-	  "/dev/input/by-path/pci-0000:00:14.0-usbv2-0:5:1.0-event-kbd"
-	  "/dev/input/by-path/pci-0000:00:14.0-usbv2-0:5:1.1-event-kbd"
+          "/dev/input/by-path/pci-0000:00:14.0-usb-0:4:1.1-event-kbd"
+          "/dev/input/by-path/pci-0000:00:14.0-usb-0:5:1.0-event-kbd"
+          "/dev/input/by-path/pci-0000:00:14.0-usb-0:5:1.1-event-kbd"
+          "/dev/input/by-path/pci-0000:00:14.0-usbv2-0:4:1.1-event-kbd"
+          "/dev/input/by-path/pci-0000:00:14.0-usbv2-0:5:1.0-event-kbd"
+          "/dev/input/by-path/pci-0000:00:14.0-usbv2-0:5:1.1-event-kbd"
         ];
         extraDefCfg = "process-unmapped-keys yes";
         config = ''
-          (defsrc
-           Numpad0 Numpad7
-          )
-          (defalias
-           hideout (macro Enter Slash KeyH KeyI KeyD KeyE KeyO KeyU KeyT Enter)
-	   logout (macro Enter Slash KeyE KeyX KeyI KeyT Enter)
-          )
-	  (deflayer poe
-	   @hideout @logout
-	  )
+                    (defsrc
+                     Numpad0 Numpad7
+                    )
+                    (defalias
+                     hideout (macro Enter Slash KeyH KeyI KeyD KeyE KeyO KeyU KeyT Enter)
+          	   logout (macro Enter Slash KeyE KeyX KeyI KeyT Enter)
+                    )
+          	  (deflayer poe
+          	   @hideout @logout
+          	  )
         '';
       };
     };
   };
 
 }
-
