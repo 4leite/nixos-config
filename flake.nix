@@ -39,11 +39,11 @@
           specialArgs = specialArgs;
           system = system;
           modules = shared-modules ++ [
+            inputs.chuwi-minibook-x.nixosModules.default
             ./shared/configuration.nix
             ./hosts/chewbacca/configuration.nix
             ./users/jon.nix
             ./users/coleite.nix
-            inputs.chuwi-minibook-x.nixosModules.default
           ];
         };
         hotpie = nixpkgs.lib.nixosSystem {
