@@ -2,10 +2,15 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
- # Set your time zone.
+  # Set your time zone.
   time.timeZone = "Pacific/Auckland";
 
   # Select internationalisation properties.
@@ -23,10 +28,8 @@
     LC_TIME = "en_NZ.UTF-8";
   };
 
- # Enable the GNOME Desktop Environment.
+  # Enable the GNOME Desktop Environment.
   services.displayManager.gdm.enable = true;
-  services.displayManager.gdm.wayland = true;
-  
   services.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
@@ -59,7 +62,7 @@
 
   nixpkgs.config.allowUnfree = true;
 
-    # Enable auto-upgrades.
+  # Enable auto-upgrades.
   system.autoUpgrade = {
     enable = true;
     # Run daily
@@ -101,9 +104,9 @@
     android-tools
     vlc
     nixfmt
-#  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
-  ];  
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  wget
+  ];
 
   environment.shellAliases = {
     nxs = "sudo nixos-rebuild switch --flake ~/.dotnixos";
@@ -136,8 +139,20 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
-  
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+
+  # manage disk space
+  nix.settings.auto-optimise-store = true;
+  nix.gc = {
+    automatic = true;
+    persistent = true;
+    dates = "05:00:00";
+    options = "--delete-older-than 7d";
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -145,6 +160,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-   system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "24.11"; # Did you read the comment?
 
 }

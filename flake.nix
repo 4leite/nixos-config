@@ -46,10 +46,11 @@
             inputs.chuwi-minibook-x.nixosModules.default
           ];
         };
-         hotpie = nixpkgs.lib.nixosSystem {
+        hotpie = nixpkgs.lib.nixosSystem {
           specialArgs = specialArgs;
           system = system;
           modules = shared-modules ++ [
+            ./shared/configuration.nix
             ./hosts/hotpie/configuration.nix
             ./users/jon.nix
           ];

@@ -31,6 +31,8 @@
 
   hardware.graphics.enable = true;
 
+    services.displayManager.gdm.wayland = true;
+
   services.desktopManager.gnome.extraGSettingsOverrides = ''
     [org.gnome.mutter]
     experimental-features=['scale-monitor-framebuffer', 'xwayland-native-scaling']
