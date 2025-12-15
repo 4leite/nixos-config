@@ -95,6 +95,7 @@
     nodejs
     nodePackages.pnpm
     discord
+    xdg-utils
     google-chrome
     openssl
     gimp
@@ -104,13 +105,10 @@
     android-tools
     vlc
     nixfmt
+    signal-desktop
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
   ];
-
-  environment.shellAliases = {
-    nxs = "sudo nixos-rebuild switch --flake ~/.dot";
-  };
 
   programs.neovim = {
     enable = true;
@@ -118,7 +116,16 @@
   };
 
   environment.shellAliases = {
+    nxs = "sudo nixos-rebuild switch --flake ~/.dot";
     p = "pnpm";
+  };
+
+ # Ensure xdg mime handling is enabled
+  xdg.mime.enable = true;
+
+  # Set Discord as the default application for its protocol
+  xdg.mime.defaultApplications = {
+    "x-scheme-handler/discord" = [ "discord.desktop" ];
   };
 
   # Some programs need SUID wrappers, can be configured further or are
