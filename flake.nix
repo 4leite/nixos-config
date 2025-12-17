@@ -44,6 +44,7 @@
             ./hosts/chewbacca/configuration.nix
             ./users/jon.nix
             ./users/coleite.nix
+            ./users/bambam.nix
           ];
         };
         hotpie = nixpkgs.lib.nixosSystem {
