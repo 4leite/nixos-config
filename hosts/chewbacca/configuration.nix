@@ -31,38 +31,20 @@ in
 
   # Enable networking
   networking.networkmanager.enable = true;
+  networking.networkmanager.wifi.powersave = false;
 
   hardware.graphics.enable = true;
 
-  # Use Wayland by default for interactive users, but keep the Bambam
-  # session as an X11 session (installed under share/xsessions) so it
-  # runs in a dedicated X11 session. This enables Wayland for other
-  # users while still allowing Bambam to use X11.
-  services.displayManager.gdm.wayland = true;
+  services.xserver.enable = true;
+
+  services.desktopManager.gnome.enable = true;
+
+  services.displayManager.sessionPackages = [ bambam.bambam ];
 
   # Allow accounts with empty passwords to log in via the GDM greeter
   # (only for the gdm-password PAM service). This must be paired with
   # giving the account an empty password (done in users/bambam.nix).
   security.pam.services."gdm-password".allowNullPassword = true;
-
-  # Ensure AccountsService has a recorded session for the `bambam` user
-  # so GDM will default to the Bambam session for that account.
-  systemd.services.set-bambam-accounts = {
-    description = "Create AccountsService entry for bambam user";
-    wantedBy = [ "multi-user.target" ];
-    before = [ "display-manager.service" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = ''
-        /bin/sh -c '\
-        cat > /var/lib/AccountsService/users/bambam <<'EOF'\
-        [User]\
-        XSession=bambam\
-        SystemAccount=false\
-        'EOF'\
-      '';
-    };
-  };
 
   services.desktopManager.gnome.extraGSettingsOverrides = ''
     [org.gnome.mutter]
@@ -91,33 +73,12 @@ in
   #   nix-prefetch-git https://github.com/porridge/bambam --rev v1.4.1
   #
   # and copy the resulting "sha256" value into `packages/bambam.nix`.
-  services.xserver.enable = true;
-
-  environment.systemPackages = with pkgs; [ bambam.bambamPkg ];
-
-  # Some DMs (including GDM) expect session files under
-  # /usr/share/xsessions or /etc/X11/sessions. The package provides the
-  # desktop file under its store path; expose it into /etc so GDM can
-  # discover the X11 session even if the session directory from the
-  # store isn't linked into the profile.
-  environment.etc."usr/share/xsessions/bambam.desktop".source =
-    "${bambam.bambamPkg}/share/xsessions/bambam.desktop";
-
-  environment.etc."X11/sessions/bambam.desktop".source =
-    "${bambam.bambamPkg}/share/xsessions/bambam.desktop";
-
-  # The Bambam package provides its own desktop/session files under
-  # $out/share/xsessions and $out/share/wayland-sessions, so no
-  # environment.etc entries are needed here.
-  # Some display managers look in /usr/share/xsessions; create the
-  # session file there by writing to /etc/../usr/share/xsessions which
-  # resolves to /usr/share/xsessions when Nix builds the system.
-  environment.etc."../usr/share/xsessions/bambam.desktop".source =
-    "${bambam.bambamPkg}/share/xsessions/bambam.desktop";
-
-  # Ensure the xsessions file is visible to display managers by creating
-  # a symlink under /usr/share/xsessions via systemd-tmpfiles during boot/activation.
-  systemd.tmpfiles.rules = [
-    "L+ /usr/share/xsessions/bambam.desktop - - - - ${bambam.bambamPkg}/share/xsessions/bambam.desktop"
+  # Add bambam and cage to the system profile so commands are available.
+  environment.systemPackages = with pkgs; [
+    bambam.bambam
+    pkgs.cage
+    pkgs.wlr-randr
+    pkgs.xwayland-satellite
   ];
+
 }

@@ -120,7 +120,7 @@
     p = "pnpm";
   };
 
- # Ensure xdg mime handling is enabled
+  # Ensure xdg mime handling is enabled
   xdg.mime.enable = true;
 
   # Set Discord as the default application for its protocol

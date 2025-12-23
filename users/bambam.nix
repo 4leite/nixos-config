@@ -10,8 +10,8 @@
   # Define the bambam user account (used for the dedicated Bambam session).
   users.users.bambam = {
     isNormalUser = true;
-    description = "Bambam session user";
-    createHome = true;
+    description = "Bambam";
+    createHome = false;
     # Minimal groups: only the ones needed for audio/video devices.
     # Removed `wheel` and `networkmanager` to tighten security for this
     # passwordless account.
