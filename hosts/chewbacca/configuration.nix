@@ -20,6 +20,10 @@ in
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelParams = [
+    "iwlwifi.power_save=0"
+    "iwlwifi.uapsd_disable=1"
+  ];
 
   networking.hostName = "chewbacca"; # Define your hostname.
 
@@ -79,6 +83,9 @@ in
     pkgs.cage
     pkgs.wlr-randr
     pkgs.xwayland-satellite
+    iw
+    usbutils
+    ethtool
   ];
 
 }
