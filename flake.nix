@@ -17,7 +17,6 @@
       self,
       home-manager,
       nixpkgs,
-      nixpkgs-master,
       ...
     }@inputs:
     let
@@ -41,16 +40,6 @@
           specialArgs = specialArgs;
           system = system;
           modules = shared-modules ++ [
-            {
-              nixpkgs.overlays = [
-                (final: prev: {
-                  vscode = (import nixpkgs-master {
-                    system = prev.system;
-                    config.allowUnfree = true;
-                  }).vscode;
-                })
-              ];
-            }
             inputs.chuwi-minibook-x.nixosModules.default
             ./shared/configuration.nix
             ./hosts/chewbacca/configuration.nix
