@@ -10,6 +10,9 @@
   ...
 }:
 
+let
+  mkUint32 = lib.hm.gvariant.mkUint32 or (v: v); 
+in
 {
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.jon = {
@@ -110,7 +113,7 @@
     dconf = {
       enable = true;
       settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
-      settings."org/gnome/mutter".check-alive-timeout = 0;
+      settings."org/gnome/mutter".check-alive-timeout = mkUint32 0;
       settings."org/gnome/desktop/wm/keybindings" = {
         # Disable application-based switching
         switch-applications = [ ];

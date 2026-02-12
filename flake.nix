@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-master.url = "github:nixos/nixpkgs/master";
 
     chuwi-minibook-x.url = "github:4leite/nix-chuwi-minibook-x";
 
@@ -16,6 +17,7 @@
       self,
       home-manager,
       nixpkgs,
+      nixpkgs-master,
       ...
     }@inputs:
     let
@@ -39,6 +41,16 @@
           specialArgs = specialArgs;
           system = system;
           modules = shared-modules ++ [
+            {
+              nixpkgs.overlays = [
+                (final: prev: {
+                  vscode = (import nixpkgs-master {
+                    system = prev.system;
+                    config.allowUnfree = true;
+                  }).vscode;
+                })
+              ];
+            }
             inputs.chuwi-minibook-x.nixosModules.default
             ./shared/configuration.nix
             ./hosts/chewbacca/configuration.nix

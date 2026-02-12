@@ -104,12 +104,13 @@
     tor-browser
     android-tools
     vlc
-    nixfmt
+    nixfmt-rfc-style
     signal-desktop
     nmap
     bind
     sqlitebrowser
     traceroute
+    gh
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
   ];
@@ -121,6 +122,7 @@
 
   environment.shellAliases = {
     nxs = "sudo nixos-rebuild switch --flake ~/.dot";
+    nxu = "nix flake update --flake ~/.dot && sudo nixos-rebuild switch --flake ~/.dot";
     p = "pnpm";
   };
 
