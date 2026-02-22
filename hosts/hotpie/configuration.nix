@@ -14,88 +14,88 @@ let
     inherit system;
     config.allowUnfree = true;
   };
-  vscode-insiders-bin = pkgs.stdenv.mkDerivation {
-    pname = "vscode-insiders-bin";
-    version = "latest";
-    src = pkgs.fetchurl {
-      name = "vscode-insiders-latest-linux-x64.tar.gz";
-      url = "https://update.code.visualstudio.com/latest/linux-x64/insider";
-      hash = "sha256-YBK3RXNUjSf+JaS+VVSh09QYIa/WxTprz50+wQvmSz0=";
-    };
-    dontStrip = true;
-    installPhase = ''
-      mkdir -p $out/bin $out/lib/vscode-insiders
-      cp -r . $out/lib/vscode-insiders/
-      ln -s $out/lib/vscode-insiders/bin/code-insiders $out/bin/code-insiders
-    '';
-  };
-
-  vscode-insiders-fhs = unstable.buildFHSEnv {
-    name = "code-insiders";
-    targetPkgs =
-      p: with p; [
-        vscode-insiders-bin
-        # ld-linux and glibc
-        glibc
-        # dotnet
-        curl
-        icu
-        libunwind
-        libuuid
-        lttng-ust
-        openssl
-        zlib
-        # kerberos / mono
-        krb5
-        # electron / chromium
-        alsa-lib
-        at-spi2-atk
-        at-spi2-core
-        atk
-        cairo
-        cups
-        dbus
-        expat
-        fontconfig
-        freetype
-        gdk-pixbuf
-        glib
-        gtk3
-        libdrm
-        libGL
-        libnotify
-        libxkbcommon
-        nspr
-        nss
-        pango
-        libsecret
-        libX11
-        libXScrnSaver
-        libXcomposite
-        libXcursor
-        libXdamage
-        libXext
-        libXfixes
-        libXi
-        libXrandr
-        libXrender
-        libXtst
-        libxcb
-        libxshmfence
-        # extra libs needed at runtime
-        stdenv.cc.cc # libstdc++.so.6
-        libxkbfile
-        libXtst
-      ];
-    multiPkgs =
-      p: with p; [
-        # these need to be in both 32-bit and 64-bit paths
-        mesa # libgbm.so.1, libGL, etc
-        libgbm # explicit libgbm.so.1
-        udev # libudev.so.1
-      ];
-    runScript = "code-insiders";
-  };
+  #  vscode-insiders-bin = pkgs.stdenv.mkDerivation {
+  #    pname = "vscode-insiders-bin";
+  #    version = "latest";
+  #    src = pkgs.fetchurl {
+  #      name = "vscode-insiders-latest-linux-x64.tar.gz";
+  #      url = "https://update.code.visualstudio.com/latest/linux-x64/insider";
+  #      hash = "sha256-YBK3RXNUjSf+JaS+VVSh09QYIa/WxTprz50+wQvmSz0=";
+  #    };
+  #    dontStrip = true;
+  #    installPhase = ''
+  #      mkdir -p $out/bin $out/lib/vscode-insiders
+  #      cp -r . $out/lib/vscode-insiders/
+  #      ln -s $out/lib/vscode-insiders/bin/code-insiders $out/bin/code-insiders
+  #    '';
+  #  };
+  #
+  #  vscode-insiders-fhs = unstable.buildFHSEnv {
+  #    name = "code-insiders";
+  #    targetPkgs =
+  #      p: with p; [
+  #        vscode-insiders-bin
+  #        # ld-linux and glibc
+  #        glibc
+  #        # dotnet
+  #        curl
+  #        icu
+  #        libunwind
+  #        libuuid
+  #        lttng-ust
+  #        openssl
+  #        zlib
+  #        # kerberos / mono
+  #        krb5
+  #        # electron / chromium
+  #        alsa-lib
+  #        at-spi2-atk
+  #        at-spi2-core
+  #        atk
+  #        cairo
+  #        cups
+  #        dbus
+  #        expat
+  #        fontconfig
+  #        freetype
+  #        gdk-pixbuf
+  #        glib
+  #        gtk3
+  #        libdrm
+  #        libGL
+  #        libnotify
+  #        libxkbcommon
+  #        nspr
+  #        nss
+  #        pango
+  #        libsecret
+  #        libX11
+  #        libXScrnSaver
+  #        libXcomposite
+  #        libXcursor
+  #        libXdamage
+  #        libXext
+  #        libXfixes
+  #        libXi
+  #        libXrandr
+  #        libXrender
+  #        libXtst
+  #        libxcb
+  #        libxshmfence
+  #        # extra libs needed at runtime
+  #        stdenv.cc.cc # libstdc++.so.6
+  #        libxkbfile
+  #        libXtst
+  #      ];
+  #    multiPkgs =
+  #      p: with p; [
+  #        # these need to be in both 32-bit and 64-bit paths
+  #        mesa # libgbm.so.1, libGL, etc
+  #        libgbm # explicit libgbm.so.1
+  #        udev # libudev.so.1
+  #      ];
+  #    runScript = "code-insiders";
+  #  };
 in
 {
   imports = [
@@ -175,7 +175,7 @@ in
     wine
     gearlever
     autokey
-    vscode-insiders-fhs
+    # vscode-insiders-fhs
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
   ];
