@@ -66,6 +66,8 @@ in
   #    EVDEV_ABS_00=:::8
   #   EVDEV_ABS_01=:::8
 
+  services.vscode-server.enable = true;
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   # Provide a local package for Bambam. Nixpkgs may not ship this package

@@ -11,7 +11,7 @@
 }:
 
 let
-  mkUint32 = lib.hm.gvariant.mkUint32 or (v: v); 
+  mkUint32 = lib.hm.gvariant.mkUint32 or (v: v);
 in
 {
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -33,18 +33,29 @@ in
     home.username = "jon";
     home.homeDirectory = "/home/jon";
 
+    # new
+    # programs.git = {
+    #   enable = true;
+    #   settings = {
+    #     user = {
+    #      name = "4leite";
+    #      email = "4leite@gmail.com";
+    #     };
+    #     init.defaultBranch = "main";
+    #     push.autoSetupRemote = true;
+    #   };
+    # };
     programs.git = {
       enable = true;
-      settings = {
+      extraConfig = {
         user = {
-         name = "4leite";
-         email = "4leite@gmail.com";
+          name = "4leite";
+          email = "4leite@gmail.com";
         };
         init.defaultBranch = "main";
         push.autoSetupRemote = true;
       };
     };
-
     # This value determines the Home Manager release that your configuration is
     # compatible with. This helps avoid breakage when a new Home Manager release
     # introduces backwards incompatible changes.

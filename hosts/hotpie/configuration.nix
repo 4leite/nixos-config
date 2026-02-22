@@ -34,7 +34,12 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.displayManager.gdm.wayland = false;
+  # new
+  # services.displayManager.gdm.wayland = false;
+  # old
+  services.xserver.displayManager.gdm.wayland = true;
+
+  services.xserver.desktopManager.gnome.enable = true;
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
