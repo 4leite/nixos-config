@@ -41,7 +41,7 @@ in
 
   services.xserver.enable = true;
 
-  services.desktopManager.gnome.enable = true;
+  # services.desktopManager.gnome.enable = true;
 
   services.displayManager.sessionPackages = [ bambam.bambam ];
 
@@ -50,10 +50,10 @@ in
   # giving the account an empty password (done in users/bambam.nix).
   security.pam.services."gdm-password".allowNullPassword = true;
 
-  services.desktopManager.gnome.extraGSettingsOverrides = ''
-    [org.gnome.mutter]
-    experimental-features=['scale-monitor-framebuffer', 'xwayland-native-scaling']
-  '';
+#  services.desktopManager.gnome.extraGSettingsOverrides = ''
+#    [org.gnome.mutter]
+#    experimental-features=['scale-monitor-framebuffer', 'xwayland-native-scaling']
+#  '';
 
   # fix touchpad jitter
   services.udev.extraHwdb = ''
@@ -66,7 +66,7 @@ in
   #    EVDEV_ABS_00=:::8
   #   EVDEV_ABS_01=:::8
 
-  services.vscode-server.enable = true;
+  # services.vscode-server.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
