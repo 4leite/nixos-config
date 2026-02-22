@@ -200,6 +200,7 @@ in
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  services.vscode-server.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

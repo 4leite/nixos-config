@@ -122,7 +122,13 @@ in
     sqlitebrowser
     traceroute
     gh
-    unstable.vscode.fhs
+    (unstable.vscode-with-extensions.override {
+      vscode = unstable.vscode.fhs;
+      vscodeExtensions = with pkgs.vscode-extensions; [
+        ms-vscode-remote.remote-ssh
+        ms-vscode-remote.remote-ssh-edit
+      ];
+    })
     #    (unstable.vscode.override { isInsiders = true; }).fhs
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
