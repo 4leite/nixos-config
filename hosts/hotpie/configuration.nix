@@ -7,6 +7,7 @@
   pkgs,
   inputs,
   nixpkgs-unstable,
+  system,
   lib,
   ...
 }:
