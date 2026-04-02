@@ -97,7 +97,6 @@ in
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     neovim
-    chromium
     ghostty
     git
     xclip
@@ -105,7 +104,6 @@ in
     pciutils
     nodejs
     nodePackages.pnpm
-    discord
     xdg-utils
     google-chrome
     openssl
@@ -121,14 +119,11 @@ in
     bind
     sqlitebrowser
     traceroute
-    gh
-    (unstable.vscode-with-extensions.override {
-      vscode = unstable.vscode.fhs;
-      vscodeExtensions = with pkgs.vscode-extensions; [
-        ms-vscode-remote.remote-ssh
-        ms-vscode-remote.remote-ssh-edit
-      ];
-    })
+    unstable.chromium
+    unstable.discord
+    unstable.gh
+    unstable.vscode.fhs
+    unstable.cloudflared
     #    (unstable.vscode.override { isInsiders = true; }).fhs
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
