@@ -169,6 +169,20 @@ in
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+    # Enable common container config files in /etc/containers
+  virtualisation.containers.enable = true;
+  virtualisation = {
+    podman = {
+      enable = true;
+
+      # Create a `docker` alias for podman, to use it as a drop-in replacement
+      dockerCompat = true;
+
+      # Required for containers under podman-compose to be able to talk to each other.
+      defaultNetwork.settings.dns_enabled = true;
+    };
+  };
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -177,6 +191,11 @@ in
     wine
     gearlever
     autokey
+    dive # look into docker image layers
+    podman-tui # status of containers in the terminal
+    docker-compose # start group of containers for dev
+    cloudflared
+    #podman-compose # start group of containers for dev
     # vscode-insiders-fhs
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
@@ -201,6 +220,19 @@ in
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services.vscode-server.enable = true;
+
+  services.cloudflared = {
+    enable = true;
+    tunnels = {
+      "mince" = {
+        default = "http_status:404";
+        ingress = {
+          "4pi.co.nz" = "http://localhost:22";
+        };
+        credentialsFile = "/home/jon/.cloudflared/9f371b0c-a3f4-42ce-82e3-fd6c07715399.json";
+      };
+    };
+  };
 
   services.logind.extraConfig = ''
     IdleAction=ignore

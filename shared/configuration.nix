@@ -69,6 +69,10 @@ in
     #media-session.enable = true;
   };
 
+  services.envfs = {
+     enable = true;
+  };
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -118,13 +122,20 @@ in
     nmap
     bind
     sqlitebrowser
+    python3
+    killall
+    jq
+    unzip
+    ripgrep
+    lsof
     traceroute
     unstable.chromium
     unstable.discord
     unstable.gh
     unstable.vscode.fhs
     unstable.cloudflared
-    #    (unstable.vscode.override { isInsiders = true; }).fhs
+    unstable.gh
+   #    (unstable.vscode.override { isInsiders = true; }).fhs
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
   ];
@@ -134,10 +145,51 @@ in
     viAlias = true;
   };
 
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      stdenv.cc.cc.lib
+      glibc
+      zlib
+      udev
+      nspr
+      nss
+      alsa-lib
+      atk
+      at-spi2-atk
+      at-spi2-core
+      cairo
+      cups
+      dbus
+      expat
+      fontconfig
+      freetype
+      glib
+      gtk3
+      pango
+      libdrm
+      mesa
+      libxkbcommon
+      xorg.libX11
+      xorg.libxcb
+      xorg.libXcomposite
+      xorg.libXdamage
+      xorg.libXext
+      xorg.libXfixes
+      xorg.libXrandr
+      xorg.libXrender
+      xorg.libxshmfence
+      xorg.libXi
+      xorg.libXtst
+      xorg.libXcursor
+    ];
+  };
+
   environment.shellAliases = {
     nxs = "sudo nixos-rebuild switch --flake ~/.dot";
     nxu = "nix flake update --flake ~/.dot && sudo nixos-rebuild switch --flake ~/.dot";
     p = "pnpm";
+    python = "python3";
   };
 
   # Ensure xdg mime handling is enabled
