@@ -90,4 +90,6 @@ in
     ethtool
   ];
 
+  services.cloudflare-warp.enable = false;
+
 }
