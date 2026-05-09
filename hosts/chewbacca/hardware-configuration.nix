@@ -25,7 +25,11 @@
     "sd_mod"
     "sdhci_pci"
   ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [
+    "mxc4005"
+    "intel_vbtn"
+    "soc_button_array"
+  ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
