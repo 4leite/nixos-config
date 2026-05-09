@@ -80,7 +80,7 @@ in
       EVDEV_ABS_36=:::12:8
 
     sensor:modalias:acpi:MDA6655*:dmi:*:svnCHUWI*:pnMiniBookX:*
-      ACCEL_MOUNT_MATRIX=0, -1, 0; -1, 0, 0; 0, 0, 1
+      ACCEL_MOUNT_MATRIX=1, 0, 0; 0, 1, 0; 0, 0, 1
 
     # Ensure the chassis is recognized as a convertible for tablet mode detection
     dmi:bvn*:bvr*:bd*:svnCHUWI*:pnMiniBookX*:*
@@ -91,8 +91,8 @@ in
     # MDA6655 ACPI device.  The display sensor is auto-created by the kernel;
     # create the base sensor and tag both with locations so iio-sensor-proxy
     # and the tablet-mode daemon can tell them apart.
-    SUBSYSTEM=="iio", KERNEL=="iio*", SUBSYSTEMS=="i2c", DEVPATH=="*/i2c-*/i2c-MDA6655:00/iio:device*", ENV{ACCEL_LOCATION}="display", ENV{ACCEL_MOUNT_MATRIX}="0,-1,0;1,0,0;0,0,1", RUN+="${chuwi-create-base-accelerometer}", TAG+="systemd", ENV{SYSTEMD_WANTS}+="iio-sensor-proxy.service"
-    SUBSYSTEM=="iio", KERNEL=="iio*", SUBSYSTEMS=="i2c", DEVPATH=="*/i2c-*/*-0015/iio:device*", ENV{ACCEL_LOCATION}="base", ENV{ACCEL_MOUNT_MATRIX}="0,-1,0;1,0,0;0,0,1", RUN{builtin}+="kmod load chuwi-ltsm-hack", TAG+="systemd", ENV{SYSTEMD_WANTS}+="chuwi-tablet-mode.service iio-sensor-proxy.service"
+    SUBSYSTEM=="iio", KERNEL=="iio*", SUBSYSTEMS=="i2c", DEVPATH=="*/i2c-*/i2c-MDA6655:00/iio:device*", ENV{ACCEL_LOCATION}="display", ENV{ACCEL_MOUNT_MATRIX}="1,0,0;0,1,0;0,0,1", RUN+="${chuwi-create-base-accelerometer}", TAG+="systemd", ENV{SYSTEMD_WANTS}+="iio-sensor-proxy.service"
+    SUBSYSTEM=="iio", KERNEL=="iio*", SUBSYSTEMS=="i2c", DEVPATH=="*/i2c-*/*-0015/iio:device*", ENV{ACCEL_LOCATION}="base", ENV{ACCEL_MOUNT_MATRIX}="1,0,0;0,1,0;0,0,1", RUN{builtin}+="kmod load chuwi-ltsm-hack", TAG+="systemd", ENV{SYSTEMD_WANTS}+="chuwi-tablet-mode.service iio-sensor-proxy.service"
   '';
   #    EVDEV_ABS_00=:::8
   #   EVDEV_ABS_01=:::8
