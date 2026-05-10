@@ -1,3 +1,23 @@
 {
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "chat.tools.terminal.autoApprove": {
+    "printf": true,
+    "hostnamectl": true,
+    "gsettings": true,
+    "true": true,
+    "continue": true,
+    "udevadm": true,
+    "gdbus": true,
+    "xrandr": true,
+    "systemctl": true,
+    "journalctl": true,
+    "nix": true,
+    "awk": true,
+    "command": true,
+    "monitor-sensor": true,
+    "timeout": true,
+    "git add": true,
+    "pgrep": true,
+    "set": true
+  }
 }

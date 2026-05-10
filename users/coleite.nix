@@ -97,6 +97,7 @@
       settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
       settings."org/gnome/mutter".check-alive-timeout = 0;
       settings."org/gnome/desktop/interface".scaling-factor = 1.5;
+      settings."org/gnome/settings-daemon/peripherals/touchscreen".orientation-lock = false;
     };
 
     # Let Home Manager install and manage itself.

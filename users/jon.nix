@@ -120,6 +120,9 @@ in
         sleep-inactive-battery-timeout = 0;
       };
       settings."org/gnome/mutter".check-alive-timeout = mkUint32 0;
+      # Runtime orientation lock may be enabled temporarily during sensor
+      # debugging, but the declarative target is to allow automatic rotation.
+      settings."org/gnome/settings-daemon/peripherals/touchscreen".orientation-lock = false;
       settings."org/gnome/desktop/wm/keybindings" = {
         # Disable application-based switching
         switch-applications = [ ];

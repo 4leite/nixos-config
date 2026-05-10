@@ -10,10 +10,6 @@
 }:
 let
   bambam = import ../../packages/bambam.nix { inherit pkgs; };
-  chuwi-ltsm-hack = pkgs.callPackage ../../packages/chuwi-ltsm-hack.nix {
-    kernel = config.boot.kernelPackages.kernel;
-  };
-  chuwi-tablet-mode-daemon = pkgs.callPackage ../../packages/chuwi-tablet-mode-daemon.nix { };
   chuwi-create-base-accelerometer = pkgs.writeShellScript "chuwi-create-base-accelerometer" ''
     for device in /sys/bus/i2c/devices/i2c-*/name; do
       if ${pkgs.gnugrep}/bin/grep -q Synopsys "$device"; then
@@ -21,6 +17,13 @@ let
       fi
     done
   '';
+  # iio-sensor-proxy reports the normal laptop posture as right-up with the
+  # raw/identity display accelerometer matrix.  Rotate the display sensor
+  # vector so normal laptop posture reports as normal.  Keep the base sensor
+  # transform explicit and separate while upstream-first hinge/tablet support is
+  # re-evaluated.
+  chuwi-display-accel-matrix = "0,-1,0;1,0,0;0,0,1";
+  chuwi-base-accel-matrix = "1,0,0;0,1,0;0,0,1";
 in
 
 {
@@ -34,9 +37,10 @@ in
   boot.kernelParams = [
     "iwlwifi.power_save=0"
     "iwlwifi.uapsd_disable=1"
+    # Good: fixes the MiniBook X N150 portrait-native DSI panel baseline.
+    # Display accelerometer calibration is handled separately below.
+    "video=DSI-1:panel_orientation=right_side_up"
   ];
-  boot.extraModulePackages = [ chuwi-ltsm-hack ];
-  boot.kernelModules = [ "chuwi-ltsm-hack" ];
   boot.extraModprobeConfig = ''
     options intel-hid enable_sw_tablet_mode=1
   '';
@@ -80,7 +84,7 @@ in
       EVDEV_ABS_36=:::12:8
 
     sensor:modalias:acpi:MDA6655*:dmi:*:svnCHUWI*:pnMiniBookX:*
-      ACCEL_MOUNT_MATRIX=1, 0, 0; 0, 1, 0; 0, 0, 1
+      ACCEL_MOUNT_MATRIX=${chuwi-display-accel-matrix}
 
     # Ensure the chassis is recognized as a convertible for tablet mode detection
     dmi:bvn*:bvr*:bd*:svnCHUWI*:pnMiniBookX*:*
@@ -90,26 +94,14 @@ in
     # The Chuwi MiniBook X exposes two MXC6655 accelerometers through one
     # MDA6655 ACPI device.  The display sensor is auto-created by the kernel;
     # create the base sensor and tag both with locations so iio-sensor-proxy
-    # and the tablet-mode daemon can tell them apart.
-    SUBSYSTEM=="iio", KERNEL=="iio*", SUBSYSTEMS=="i2c", DEVPATH=="*/i2c-*/i2c-MDA6655:00/iio:device*", ENV{ACCEL_LOCATION}="display", ENV{ACCEL_MOUNT_MATRIX}="1,0,0;0,1,0;0,0,1", RUN+="${chuwi-create-base-accelerometer}", TAG+="systemd", ENV{SYSTEMD_WANTS}+="iio-sensor-proxy.service"
-    SUBSYSTEM=="iio", KERNEL=="iio*", SUBSYSTEMS=="i2c", DEVPATH=="*/i2c-*/*-0015/iio:device*", ENV{ACCEL_LOCATION}="base", ENV{ACCEL_MOUNT_MATRIX}="1,0,0;0,1,0;0,0,1", RUN{builtin}+="kmod load chuwi-ltsm-hack", TAG+="systemd", ENV{SYSTEMD_WANTS}+="chuwi-tablet-mode.service iio-sensor-proxy.service"
+    # can tell them apart during upstream-first baseline testing.
+    SUBSYSTEM=="iio", KERNEL=="iio*", SUBSYSTEMS=="i2c", DEVPATH=="*/i2c-*/i2c-MDA6655:00/iio:device*", ENV{ACCEL_LOCATION}="display", ENV{ACCEL_MOUNT_MATRIX}="${chuwi-display-accel-matrix}", RUN+="${chuwi-create-base-accelerometer}", TAG+="systemd", ENV{SYSTEMD_WANTS}+="iio-sensor-proxy.service"
+    SUBSYSTEM=="iio", KERNEL=="iio*", SUBSYSTEMS=="i2c", DEVPATH=="*/i2c-*/*-0015/iio:device*", ENV{ACCEL_LOCATION}="base", ENV{ACCEL_MOUNT_MATRIX}="${chuwi-base-accel-matrix}", TAG+="systemd", ENV{SYSTEMD_WANTS}+="iio-sensor-proxy.service"
   '';
   #    EVDEV_ABS_00=:::8
   #   EVDEV_ABS_01=:::8
 
   # services.vscode-server.enable = true;
-
-  systemd.services.chuwi-tablet-mode = {
-    description = "Chuwi MiniBook X dual-accelerometer tablet-mode detection";
-    after = [ "iio-sensor-proxy.service" ];
-    wants = [ "iio-sensor-proxy.service" ];
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${chuwi-tablet-mode-daemon}/bin/chuwi-angle-sensor --interval 0.5 --threshold 45 --hysteresis 20 --tilt-threshold 20 --jerk-threshold 6 ${chuwi-tablet-mode-daemon}/bin/chuwi-tablet-control";
-      Restart = "on-failure";
-      RestartSec = "5s";
-    };
-  };
 
   hardware.sensor.iio.enable = true;
 
@@ -130,7 +122,6 @@ in
     pkgs.cage
     pkgs.wlr-randr
     pkgs.xwayland-satellite
-    chuwi-tablet-mode-daemon
     iw
     usbutils
     ethtool
