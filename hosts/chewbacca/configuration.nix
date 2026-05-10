@@ -10,13 +10,6 @@
 }:
 let
   bambam = import ../../packages/bambam.nix { inherit pkgs; };
-  chuwi-create-base-accelerometer = pkgs.writeShellScript "chuwi-create-base-accelerometer" ''
-    for device in /sys/bus/i2c/devices/i2c-*/name; do
-      if ${pkgs.gnugrep}/bin/grep -q Synopsys "$device"; then
-        echo mxc4005 0x15 > "$(dirname "$device")/new_device" || true
-      fi
-    done
-  '';
   # iio-sensor-proxy reports the normal laptop posture as right-up with the
   # raw/identity display accelerometer matrix.  Rotate the display sensor
   # vector so normal laptop posture reports as normal.  Keep the base sensor
@@ -95,7 +88,7 @@ in
     # MDA6655 ACPI device.  The display sensor is auto-created by the kernel;
     # create the base sensor and tag both with locations so iio-sensor-proxy
     # can tell them apart during upstream-first baseline testing.
-    SUBSYSTEM=="iio", KERNEL=="iio*", SUBSYSTEMS=="i2c", DEVPATH=="*/i2c-*/i2c-MDA6655:00/iio:device*", ENV{ACCEL_LOCATION}="display", ENV{ACCEL_MOUNT_MATRIX}="${chuwi-display-accel-matrix}", RUN+="${chuwi-create-base-accelerometer}", TAG+="systemd", ENV{SYSTEMD_WANTS}+="iio-sensor-proxy.service"
+    SUBSYSTEM=="iio", KERNEL=="iio*", SUBSYSTEMS=="i2c", DEVPATH=="*/i2c-*/i2c-MDA6655:00/iio:device*", ENV{ACCEL_LOCATION}="display", ENV{ACCEL_MOUNT_MATRIX}="${chuwi-display-accel-matrix}", TAG+="systemd", ENV{SYSTEMD_WANTS}+="iio-sensor-proxy.service"
     SUBSYSTEM=="iio", KERNEL=="iio*", SUBSYSTEMS=="i2c", DEVPATH=="*/i2c-*/*-0015/iio:device*", ENV{ACCEL_LOCATION}="base", ENV{ACCEL_MOUNT_MATRIX}="${chuwi-base-accel-matrix}", TAG+="systemd", ENV{SYSTEMD_WANTS}+="iio-sensor-proxy.service"
   '';
   #    EVDEV_ABS_00=:::8

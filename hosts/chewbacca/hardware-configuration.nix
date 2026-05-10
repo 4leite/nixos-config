@@ -25,13 +25,6 @@
     "sd_mod"
     "sdhci_pci"
   ];
-  boot.initrd.kernelModules = [
-    "mxc4005"
-    "intel_vbtn"
-    "soc_button_array"
-  ];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/fd931c1a-2e2b-4ce8-8893-8323f1dec4d8";
