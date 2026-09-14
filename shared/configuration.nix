@@ -36,13 +36,8 @@ in
   };
 
   # Enable the GNOME Desktop Environment.
-  # new
-  # services.displayManager.gdm.enable = true;
-  # services.desktopManager.gnome.enable = true;
-
-  # old
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -70,7 +65,7 @@ in
   };
 
   services.envfs = {
-     enable = true;
+    enable = true;
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -92,6 +87,12 @@ in
   nix = {
     daemonCPUSchedPolicy = "idle";
     daemonIOSchedClass = "idle";
+    settings = {
+      extra-substituters = [ "https://noctalia.cachix.org" ];
+      extra-trusted-public-keys = [
+        "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+      ];
+    };
   };
 
   # Install firefox.
@@ -106,8 +107,8 @@ in
     xclip
     gparted
     pciutils
-    nodejs
-    nodePackages.pnpm
+    nodejs_24
+    corepack_24
     xdg-utils
     google-chrome
     openssl
@@ -117,7 +118,7 @@ in
     tor-browser
     android-tools
     vlc
-    nixfmt-rfc-style
+    nixfmt
     signal-desktop
     nmap
     bind
@@ -129,13 +130,16 @@ in
     ripgrep
     lsof
     traceroute
+    psmisc
+    git-filter-repo
+    inkscape
     unstable.chromium
     unstable.discord
     unstable.gh
     unstable.vscode.fhs
     unstable.cloudflared
     unstable.gh
-   #    (unstable.vscode.override { isInsiders = true; }).fhs
+    #    (unstable.vscode.override { isInsiders = true; }).fhs
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
   ];
@@ -169,25 +173,26 @@ in
       pango
       libdrm
       mesa
+      libgbm
       libxkbcommon
-      xorg.libX11
-      xorg.libxcb
-      xorg.libXcomposite
-      xorg.libXdamage
-      xorg.libXext
-      xorg.libXfixes
-      xorg.libXrandr
-      xorg.libXrender
-      xorg.libxshmfence
-      xorg.libXi
-      xorg.libXtst
-      xorg.libXcursor
+      libx11
+      libxcb
+      libxcomposite
+      libxdamage
+      libxext
+      libxfixes
+      libxrandr
+      libxrender
+      libxshmfence
+      libxi
+      libxtst
+      libxcursor
     ];
   };
 
   environment.shellAliases = {
-    nxs = "sudo nixos-rebuild switch --flake ~/.dot";
-    nxu = "nix flake update --flake ~/.dot && sudo nixos-rebuild switch --flake ~/.dot";
+    nxs = "sudo nixos-rebuild switch --accept-flake-config --flake ~/.dot";
+    nxu = "nix flake update --accept-flake-config --flake ~/.dot && sudo nixos-rebuild switch --accept-flake-config --flake ~/.dot";
     p = "pnpm";
     python = "python3";
   };

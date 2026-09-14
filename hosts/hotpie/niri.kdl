@@ -1,0 +1,194 @@
+input {
+    keyboard {
+        xkb {
+            layout "us"
+        }
+        numlock
+    }
+    touchpad
+
+    mouse
+}
+
+environment {
+    TERMINAL "ghostty"
+}
+
+layout {
+    gaps 0
+    center-focused-column "never"
+    preset-column-widths {
+        proportion 0.8
+        proportion 0.6
+        proportion 0.4
+        proportion 0.2
+    }
+    default-column-width { proportion 0.6; }
+    focus-ring {
+        off
+    }
+    border {
+        width 4
+
+        active-color "#000000"
+
+        inactive-color "#3d3846"
+    }
+}
+
+spawn-at-startup "noctalia"
+
+hotkey-overlay {
+    skip-at-startup
+}
+
+prefer-no-csd
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+window-rule {
+    match app-id="dev.noctalia.Noctalia"
+    open-floating true
+    default-column-width { fixed 1080; }
+    default-window-height { fixed 920; }
+}
+
+debug {
+    honor-xdg-activation-with-invalid-serial
+}
+
+binds {
+
+
+
+    Mod+Shift+Slash { show-hotkey-overlay; }
+    Mod+T hotkey-overlay-title="Open a terminal" { spawn "ghostty"; }
+    Mod+Space hotkey-overlay-title="Open the launcher" { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
+    Mod+S hotkey-overlay-title="Open Control Center" { spawn "noctalia" "msg" "panel-toggle" "control-center"; }
+    Mod+Comma hotkey-overlay-title="Open Noctalia settings" { spawn "noctalia" "msg" "settings-toggle"; }
+    Alt+Tab repeat=false { spawn "noctalia" "msg" "window-switcher"; }
+    Super+Alt+L hotkey-overlay-title="Lock the session" { spawn "noctalia" "msg" "session" "lock"; }
+
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "noctalia" "msg" "volume-up"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "noctalia" "msg" "volume-down"; }
+    XF86AudioMute allow-when-locked=true { spawn "noctalia" "msg" "volume-mute"; }
+    XF86AudioMicMute allow-when-locked=true { spawn "noctalia" "msg" "mic-mute"; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn "noctalia" "msg" "brightness-up"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "noctalia" "msg" "brightness-down"; }
+
+    Mod+O repeat=false { toggle-overview; }
+    Mod+Q repeat=false { close-window; }
+
+    Mod+H { focus-column-left; }
+    Mod+J { focus-window-down; }
+    Mod+K { focus-window-up; }
+    Mod+L { focus-column-right; }
+    Mod+Left { focus-column-left; }
+    Mod+Down { focus-window-down; }
+    Mod+Up { focus-window-up; }
+    Mod+Right { focus-column-right; }
+
+    Mod+Ctrl+H { move-column-left; }
+    Mod+Ctrl+J { move-window-down; }
+    Mod+Ctrl+K { move-window-up; }
+    Mod+Ctrl+L { move-column-right; }
+
+    Mod+Shift+H { focus-monitor-left; }
+    Mod+Shift+J { focus-monitor-down; }
+    Mod+Shift+K { focus-monitor-up; }
+    Mod+Shift+L { focus-monitor-right; }
+
+    Mod+U { focus-workspace-down; }
+    Mod+I { focus-workspace-up; }
+    Mod+1 { focus-workspace "play"; }
+    Mod+2 { focus-workspace "work"; }
+    Mod+3 { focus-workspace "tiles"; }
+    Mod+Ctrl+U { move-column-to-workspace-down; }
+    Mod+Ctrl+I { move-column-to-workspace-up; }
+    Mod+WheelScrollDown cooldown-ms=150 { focus-workspace-down; }
+    Mod+WheelScrollUp cooldown-ms=150 { focus-workspace-up; }
+
+    Mod+R { switch-preset-column-width; }
+    Mod+Shift+R { switch-preset-column-width-back; }
+    Mod+F { maximize-column; }
+    Mod+Shift+F { fullscreen-window; }
+    Mod+C { center-column; }
+    Mod+V { toggle-window-floating; }
+    Mod+Shift+V { switch-focus-between-floating-and-tiling; }
+
+    Print { screenshot; }
+    Ctrl+Print { screenshot-screen; }
+    Alt+Print { screenshot-window; }
+
+    Mod+Shift+E { quit; }
+    Ctrl+Alt+Delete { spawn "noctalia" "msg" "panel-toggle" "session"; }
+    Mod+Shift+P { power-off-monitors; }
+    Mod+W { consume-window-into-column; }
+    Mod+D { toggle-column-tabbed-display; }
+}
+cursor {
+    xcursor-theme "Adwaita"
+    xcursor-size 24
+}
+blur {
+    off
+}
+gestures {
+    hot-corners {
+        top-right
+
+        top-left
+    }
+}
+output "DP-1" {
+    mode "3440x1440@60.001"
+
+    scale 1.0
+
+    transform "normal"
+    position x=0 y=0
+}
+
+workspace "play"
+workspace "work"
+workspace "tiles" {
+    layout {
+        default-column-width { proportion 0.333; }
+        preset-column-widths { proportion 0.333; }
+        preset-window-heights { proportion 0.5; }
+    }
+}
+
+
+window-rule {
+    match app-id=r#"(?i)^(code|code-url-handler|code-oss|codium|vscodium)$"#
+    default-column-width { proportion 0.8; }
+    open-on-workspace "work"
+}
+
+window-rule {
+    match app-id=r"^steam_app_238960$";
+
+    open-on-workspace "play"
+
+    border {
+        off
+    }
+
+    open-maximized false
+    open-fullscreen false
+    open-floating false
+
+    default-column-width { fixed 2752; }
+    default-window-height { fixed 1288; }
+
+    min-width 2752;
+    max-width 2752;
+    min-height 1288;
+    max-height 1288;
+
+
+}
+
+animations
+
+window-rule { match app-id=r"io.github.nirimod"; open-floating true; }

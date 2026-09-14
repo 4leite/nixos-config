@@ -2,7 +2,7 @@
   description = "Nixos config flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
 
@@ -10,10 +10,13 @@
 
     home-manager = {
       # Match the release branch to your nixpkgs version
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-26.05";
       # Ensure home-manager uses your system's nixpkgs version
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Follow the latest Noctalia v5 commit already built by its CI cache.
+    noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
     vscode-server.url = "github:nix-community/nixos-vscode-server";
   };
@@ -61,6 +64,7 @@
           modules = shared-modules ++ [
             ./shared/configuration.nix
             ./hosts/hotpie/configuration.nix
+            ./hosts/hotpie/desktop.nix
             ./users/jon.nix
             inputs.vscode-server.nixosModules.default
           ];

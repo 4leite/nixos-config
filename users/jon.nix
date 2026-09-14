@@ -47,7 +47,7 @@ in
     # };
     programs.git = {
       enable = true;
-      extraConfig = {
+      settings = {
         user = {
           name = "4leite";
           email = "4leite@gmail.com";
@@ -124,6 +124,12 @@ in
     dconf = {
       enable = true;
       settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+      settings."org/gnome/settings-daemon/plugins/power" = {
+        sleep-inactive-ac-type = "nothing";
+        sleep-inactive-ac-timeout = 0;
+        sleep-inactive-battery-type = "nothing";
+        sleep-inactive-battery-timeout = 0;
+      };
       settings."org/gnome/mutter".check-alive-timeout = mkUint32 0;
       settings."org/gnome/desktop/wm/keybindings" = {
         # Disable application-based switching

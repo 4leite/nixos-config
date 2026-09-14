@@ -109,6 +109,13 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  swapDevices = [
+    {
+      device = "/swapfile";
+      size = 64 * 1024;
+    }
+  ];
+
   networking.hostName = "hotpie"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -123,12 +130,8 @@ in
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  # new
-  # services.displayManager.gdm.wayland = false;
-  # old
-  services.xserver.displayManager.gdm.wayland = true;
 
-  services.xserver.desktopManager.gnome.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -147,13 +150,9 @@ in
     # Experimental and only works on modern Nvidia GPUs (Turing or newer).
     powerManagement.finegrained = false;
 
-    # Use the NVidia open source kernel module (not to be confused with the
-    # independent third-party "nouveau" open source driver).
-    # Support is limited to the Turing and later architectures. Full list of
-    # supported GPUs is at:
-    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
-    # Only available from driver 515.43.04+
-    open = true;
+    # Use the proprietary kernel module to avoid BAR1 mapping allocator
+    # failures seen with the open module on this Turing GPU.
+    open = false;
 
     # Enable the Nvidia settings menu,
     # accessible via `nvidia-settings`.
@@ -169,7 +168,7 @@ in
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-    # Enable common container config files in /etc/containers
+  # Enable common container config files in /etc/containers
   virtualisation.containers.enable = true;
   virtualisation = {
     podman = {
@@ -224,20 +223,27 @@ in
   services.cloudflared = {
     enable = true;
     tunnels = {
-      "mince" = {
+      "8ac140fe-d26c-42f6-8738-2240ac162e65" = {
         default = "http_status:404";
         ingress = {
-          "4pi.co.nz" = "http://localhost:22";
+          "mince.4pi.nz" = "ssh://localhost:22";
         };
-        credentialsFile = "/home/jon/.cloudflared/9f371b0c-a3f4-42ce-82e3-fd6c07715399.json";
+        credentialsFile = "/home/jon/.cloudflared/8ac140fe-d26c-42f6-8738-2240ac162e65.json";
       };
     };
   };
 
-  services.logind.extraConfig = ''
-    IdleAction=ignore
-    IdleActionSec=0
-  '';
+  services.logind.settings.Login = {
+    IdleAction = "ignore";
+    IdleActionSec = 0;
+  };
+
+  systemd.targets = {
+    sleep.enable = false;
+    suspend.enable = false;
+    hibernate.enable = false;
+    hybrid-sleep.enable = false;
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
