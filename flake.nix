@@ -6,8 +6,6 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
 
-    chuwi-minibook-x.url = "github:4leite/nix-chuwi-minibook-x";
-
     home-manager = {
       # Match the release branch to your nixpkgs version
       url = "github:nix-community/home-manager/release-26.05";
@@ -19,6 +17,11 @@
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
     vscode-server.url = "github:nix-community/nixos-vscode-server";
+
+    chuwi-minibook = {
+      url = "github:fstanis/chuwi-minibook";
+      flake = false;
+    };
   };
 
   outputs =
@@ -32,7 +35,7 @@
     let
       system = "x86_64-linux";
       specialArgs = inputs // {
-        inherit system;
+        inherit inputs system;
       };
       shared-modules = [
         home-manager.nixosModules.home-manager
@@ -50,7 +53,6 @@
           specialArgs = specialArgs;
           system = system;
           modules = shared-modules ++ [
-            inputs.chuwi-minibook-x.nixosModules.default
             ./shared/configuration.nix
             ./hosts/chewbacca/configuration.nix
             ./users/jon.nix
