@@ -1,17 +1,16 @@
 {
   "nodes": {
     "chuwi-minibook": {
-      "flake": false,
       "locked": {
-        "lastModified": 1789244198,
-        "narHash": "sha256-CwosQ8t29t437klA/JAZAFW8lIxyq8rJ9XYYjFp/TfY=",
-        "owner": "fstanis",
+        "lastModified": 1789651328,
+        "narHash": "sha256-HmViq2RnZdAwmYCghGWo99LwT4aa1y0rqbxOUx+mtzE=",
+        "owner": "4leite",
         "repo": "chuwi-minibook",
-        "rev": "62d00c26841e842ef4549935d6f6fee3597cadaa",
+        "rev": "340e1bb32168ad032e7fbc85c146960c01c282c4",
         "type": "github"
       },
       "original": {
-        "owner": "fstanis",
+        "owner": "4leite",
         "repo": "chuwi-minibook",
         "type": "github"
       }

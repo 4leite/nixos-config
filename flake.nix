@@ -18,10 +18,7 @@
 
     vscode-server.url = "github:nix-community/nixos-vscode-server";
 
-    chuwi-minibook = {
-      url = "github:fstanis/chuwi-minibook";
-      flake = false;
-    };
+    chuwi-minibook.url = "github:4leite/chuwi-minibook";
   };
 
   outputs =
