@@ -22,6 +22,7 @@ in
 
   hardware.chuwi-minibook = {
     enable = true;
+    mutter.enable = true;
     sensorProxy = {
       orientationSensor = "display";
       panelOrientation = "normal";
