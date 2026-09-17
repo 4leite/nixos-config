@@ -1,17 +1,22 @@
 {
   "nodes": {
     "chuwi-minibook": {
-      "flake": false,
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
       "locked": {
-        "lastModified": 1789244198,
-        "narHash": "sha256-CwosQ8t29t437klA/JAZAFW8lIxyq8rJ9XYYjFp/TfY=",
-        "owner": "fstanis",
+        "lastModified": 1789628987,
+        "narHash": "sha256-Izho2fZuRCAZrS4ztQ/SDwV1mJekFcCKXNBBXQkETMk=",
+        "owner": "4leite",
         "repo": "chuwi-minibook",
-        "rev": "62d00c26841e842ef4549935d6f6fee3597cadaa",
+        "rev": "47bb06adc1d4ea01a394aeb7dfc70c1a1f4f50d1",
         "type": "github"
       },
       "original": {
-        "owner": "fstanis",
+        "owner": "4leite",
+        "ref": "chewbacca",
         "repo": "chuwi-minibook",
         "type": "github"
       }

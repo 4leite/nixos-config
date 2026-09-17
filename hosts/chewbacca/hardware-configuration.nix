@@ -14,10 +14,6 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  users.groups.iio = { };
-
-  hardware.sensor.iio.enable = true;
-
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "nvme"
