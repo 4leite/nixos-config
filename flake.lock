@@ -1,17 +1,12 @@
 {
   "nodes": {
     "chuwi-minibook": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
       "locked": {
-        "lastModified": 1789628987,
-        "narHash": "sha256-Izho2fZuRCAZrS4ztQ/SDwV1mJekFcCKXNBBXQkETMk=",
+        "lastModified": 1789649018,
+        "narHash": "sha256-50fXaruk6Vgdefo0LKimv1gdfGTbRTKRmESAlkFaCMY=",
         "owner": "4leite",
         "repo": "chuwi-minibook",
-        "rev": "47bb06adc1d4ea01a394aeb7dfc70c1a1f4f50d1",
+        "rev": "d9efcfbce10a66eedb4efaa278cdaa2c6d481dc6",
         "type": "github"
       },
       "original": {

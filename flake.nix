@@ -18,10 +18,7 @@
 
     vscode-server.url = "github:nix-community/nixos-vscode-server";
 
-    chuwi-minibook = {
-      url = "github:4leite/chuwi-minibook/chewbacca";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    chuwi-minibook.url = "github:4leite/chuwi-minibook/chewbacca";
   };
 
   outputs =
