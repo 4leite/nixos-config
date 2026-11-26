@@ -2,11 +2,11 @@
   "nodes": {
     "chuwi-minibook": {
       "locked": {
-        "lastModified": 1789651328,
-        "narHash": "sha256-HmViq2RnZdAwmYCghGWo99LwT4aa1y0rqbxOUx+mtzE=",
+        "lastModified": 1789729277,
+        "narHash": "sha256-U0IAVPwf40MAY2I+gg+OuvyLmyuHWp1n1KaneVXlAgQ=",
         "owner": "4leite",
         "repo": "chuwi-minibook",
-        "rev": "340e1bb32168ad032e7fbc85c146960c01c282c4",
+        "rev": "c67d1cd75869ec8c8e1bc6a049569d91cba972e9",
         "type": "github"
       },
       "original": {

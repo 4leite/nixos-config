@@ -27,9 +27,12 @@ in
       orientationSensor = "display";
       panelOrientation = "normal";
     };
+
+    kernelPanelOrientation.enable = false;
+
     vbt = {
       enable = true;
-      refreshRate = 90;
+      refreshRate = 60;
       rotation = 1;
       source = ./firmware/source-vbt.bin;
     };
@@ -99,9 +102,10 @@ in
       usbutils
       ethtool
       msr-tools
+      plezy
     ]
   );
 
-  services.cloudflare-warp.enable = false;
+  services.cloudflare-warp.enable = true;
 
 }
