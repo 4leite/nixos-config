@@ -65,6 +65,7 @@
             ./hosts/hotpie/configuration.nix
             ./hosts/hotpie/desktop.nix
             ./users/jon.nix
+            ./users/4leite-bot.nix
             inputs.vscode-server.nixosModules.default
           ];
         };
